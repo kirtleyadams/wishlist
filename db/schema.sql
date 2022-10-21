@@ -1,0 +1,2 @@
+DROP DATABASE IF EXISTS wishlist_db;
+CREATE DATABASE wishlist_db;
