@@ -1,5 +1,4 @@
 const { Model, DataTypes, UUIDV4 } = require('sequelize');
-// const { DataTypes } = require('sequelize/types');
 const sequelize = require ('../config');
 
 class User extends Model {}
