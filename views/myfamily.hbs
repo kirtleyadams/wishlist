@@ -1,0 +1,161 @@
+{{> navbar}}
+
+<h3>The {{ user.familyName }} Family</h3>
+
+{{#eq user.level 1}}
+  <div class="'container">
+  <div class="col-8"id="famiyTable">
+  <table class="table" id="table1">
+    <tr class="table-active">
+      <th>Name</th>
+      <th>Relationship</th>
+      <th>Contact</th>
+      <th>Status</th>
+      <th></th>
+    </tr>
+    {{#each fullFam as |user|}}
+      <tr>
+        <td>{{ user.firstName }} {{ user.lastName }}</td>
+        <td>{{ user.role }}</td>
+        <td>{{ phoneNumber user.phoneNumber }}</td>
+        {{#if user.approval}}
+          <td>Approved</td>
+        {{else}}
+          <td>Pending</td>
+        {{/if}}
+        {{#eq user.level 1}}
+          <td></td>
+        {{else}}
+          <td>
+            <!-- Button trigger modal -->
+            <div data-bs-toggle="modal" data-bs-target="#{{ user.firstName }}">
+              Edit
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="{{ user.firstName }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Edit Family Member</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div ="container-fluid">
+                      <div class="input-group mb-3">
+                        <input type="hidden" class="form-control" dataname="{{ user.id }}" value="{{ user.id }}" id="newId">
+                      </div>
+                      <div class="input-group mb-3">
+                        <span class="input-group-text col-5">Full Name</span>
+                        <input type="text" aria-label="First name" class="form-control" dataname="{{ user.id }}" value="{{ user.firstName }}" id="newFirstName">
+                        <input type="text" aria-label="Last name" class="form-control" dataname="{{ user.id }}" value="{{ user.lastName }}" id="newLastName">
+                      </div>
+                      <div class="input-group mb-3">
+                        <span class="input-group-text col-5" id="inputGroup-sizing-default">Relationship</span>
+                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" dataname="{{ user.id }}" value="{{ user.role }}" id="newRole">
+                      </div>
+                      <div class="input-group mb-3">
+                        <span class="input-group-text col-5" id="inputGroup-sizing-default">Contact</span>
+                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" dataname="{{ user.id }}" value="{{ phoneNumber user.phoneNumber }}" id="newPhoneNumber">
+                      </div>                      
+                      <div class="input-group mb-3">
+                        <label class="input-group-text col-5" for="inputGroupSelect01">Access Level</label>
+                        <select dataname="{{ user.id }}" class="form-select" id="newLevel" list ="level-list">
+                          <option>{{ user.level }}</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                        </select>
+                      </div>
+                      <div class="input-group mb-3">
+                        <label class="input-group-text col-5" for="inputGroupSelect01">Visible</label>
+                        <select dataname="{{ user.id }}" class="form-select" id="newVisible" list ="level-list">
+                          <option>{{ user.visible }}</option>
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                        </select>
+                      </div>
+                      {{#unless user.approval}}
+                        <button type="button" class="btn btn-success approveBtn" data-bs-dismiss="modal">Approve</button>
+                        <button type="button" class="btn btn-danger denyBtn" data-bs-dismiss="modal">Deny</button>
+                      {{/unless}}
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button class="btn btn-danger" data-bs-target="#{{ user.firstName }}{{ user.lastName }}" data-bs-toggle="modal">Delete User</button>
+                    <button type="button" class="btn btn-dark updateBtn" data-bs-dismiss="modal" dataname="{{ user.id }}">Save</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal fade" id="{{ user.firstName }}{{ user.lastName }}" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalToggleLabel2">Delete FamYOUly Memeber</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    Are you sure you want to delete {{ user.firstName }} {{ user.lastName}}? 
+                    The user will be removed from your family and unable to login and see any information moving forward.
+                  </div>
+                  <div class="input-group mb-3">
+                    <input type="hidden" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="{{ user.id }}" id="newRole">
+                  </div>
+                  <div class="modal-footer">
+                    <button class="btn btn-danger deleteBtn" data-bs-dismiss="modal">Delete</button>
+                    <button class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+        {{/eq}}
+      </tr>
+    {{/each}}
+  </table>
+  </div>
+  </div>
+{{/eq}}
+
+{{#eq user.level 2}}
+<h4>Level 2</h4>
+  <div class="'container">
+    <div class="col-8"id="famiyTable2">
+      <table class="table" id="table2">
+        <tr class="table-active">
+          <th>Name</th>
+          <th>Relationship</th>
+          <th>Contact</th>
+        </tr>
+        {{#each lvl2Fam as |user|}}
+          <tr>
+            <td>{{ user.firstName }} {{ user.lastName }}</td>
+            <td>{{ user.role }}</td>
+            <td>{{ phoneNumber user.phoneNumber }}</td>
+          </tr>
+        {{/each}}
+      </table>
+    </div>
+  </div>
+{{/eq}}
+
+{{#eq user.level 3}}
+  <div class="'container">
+    <div class="col-8"id="famiyTable3">
+      <table class="table" id="table3">
+        <tr class="table-active">
+          <th>Name</th>
+          <th>Relationship</th>
+          <th>Contact</th>
+        </tr>
+        {{#each lvl3Fam as |user|}}
+          <tr>
+            <td>{{ user.firstName }} {{ user.lastName }}</td>
+            <td>{{ user.role }}</td>
+            <td>{{ phoneNumber user.phoneNumber }}</td>
+          </tr>
+        {{/each}}
+      </table>
+    </div>
+  </div>
+{{/eq}}
